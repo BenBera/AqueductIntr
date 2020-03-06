@@ -1,6 +1,8 @@
 import 'package:heroes/controller/heroes_controller.dart';
+import 'package:heroes/model/user.dart';
 
 import 'heroes.dart';
+import 'package:aqueduct/managed_auth.dart';
 
 /// This type initializes an application.
 ///
@@ -10,7 +12,7 @@ class HeroesChannel extends ApplicationChannel {
   ManagedContext context;
 
   /// Initialize services in this method.
-  ///
+  AuthServer authServer;
   /// Implement this method to initialize services, read values from [options]
   /// and any other initialization required before constructing [entryPoint].
   ///
@@ -32,6 +34,10 @@ Future prepare() async {
       config.database.databaseName);
 
   context = ManagedContext(dataModel, persistentStore);
+
+
+  final   authStorage =ManagedAuthDelegate<User>(context);
+  authServer = AuthServer(authStorage);
 }
 
   // @override

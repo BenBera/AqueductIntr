@@ -19,14 +19,27 @@ export 'package:aqueduct/aqueduct.dart';
 ///           });
 ///         }
 ///
-class Harness extends TestHarness<HeroesChannel> {
+// class Harness extends TestHarness<HeroesChannel> {
+//   @override
+//   Future onSetUp() async {
+
+//   }
+
+//   @override
+//   Future onTearDown() async {
+
+//   }
+// }
+class Harness extends TestHarness<HeroesChannel> with TestHarnessORMMixin {
+  @override
+  ManagedContext get context => channel.context;
+
   @override
   Future onSetUp() async {
-
-  }
-
-  @override
-  Future onTearDown() async {
-
+    await resetData();
   }
 }
+
+
+
+

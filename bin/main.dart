@@ -1,6 +1,7 @@
 import 'package:heroes/heroes.dart';
 
 Future main() async {
+  
   final app = Application<HeroesChannel>()
       ..options.configurationFilePath = "config.yaml"
       ..options.port = 8888;
