@@ -22,22 +22,6 @@ void main() {
           })
         ]));
   });
-  test("Get /heroes returns 200 Ok",
-  () async {
-    final query = Query<Hero>(harness.application.channel.context)
-    ..values.name = "Ben"; await query. insert();
-     //  a matcher for the expected response
-     final response = await harness.agent.get("/heroes");
-     expectResponse(response,200, 
-     body: allOf([
-       hasLength(greaterThan(0)),
-       everyElement({
-         "id": greaterThan(0),
-         "name" : isString,
-       })
-     ]));
-
-  });
 
   test("POST /heroes returns 200 OK", () async {
   final response = await harness.agent.post("/heroes", body: {

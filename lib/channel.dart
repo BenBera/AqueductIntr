@@ -1,5 +1,7 @@
 import 'package:heroes/controller/heroes_controller.dart';
+import 'package:heroes/controller/register_controller.dart';
 import 'package:heroes/model/user.dart';
+import 'dart:io';
 
 import 'heroes.dart';
 import 'package:aqueduct/managed_auth.dart';
@@ -76,27 +78,41 @@ Future prepare() async {
   Controller get entryPoint {
     final router = Router();
 
-    // Prefer to use `link` instead of `linkFunction`.
+   
 
-    router.route('/heroes/[:id]').link(() => HeroesController(context));// context is an example of a service object
-    // service encopsulate logic into a single object that can be used in multiple controllers
-    // Services are passed into a controller's contructor (dependencies enjection)
-    // router.route('/users')
-    // .link(() => APIkeyValidator())
-    // .link(() => Authorizer.bearer()) 
-    // .link(() => UsersController());
+ router
+    .route('/auth/token')
+    .link(() => AuthController(authServer));
 
-    // router.route('/poats')
-    // .link(() => APIkeyValidator())
-    // .link(() => PostsConntroller());
+
+  router
+    .route('/register')
+    .link(() => RegisterController(context, authServer));
+
+    
+    router
+  .route('/heroes/[:id]')
+  // .link(() => Authorizer.bearer(authServer))
+  .link(() => HeroesController(context));
+
+
+  router
+  .route('/clientswagger')
+  .linkFunction((request) async{
+    final clientswagger = await File('client.html').readAsString();
+
+    return Response.ok(clientswagger)..contentType = ContentType.html;
+
+  } );
+
 
     
 
-    // See: https://aqueduct.io/docs/http/request_controller/
+    // // See: https://aqueduct.io/docs/http/request_controller/
 
-    router.route("/example").linkFunction((request) async {
-      return Response.ok({"key": "value"});
-    });
+    // router.route("/example").linkFunction((request) async {
+    //   return Response.ok({"key": "value"});
+    // });
 
     return router;
   }
